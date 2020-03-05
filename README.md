@@ -1,2 +1,2 @@
-# tensorflow_image_claadifier_demo
+# Tensorflow Image Classifier Demo
 A image classifier base on tensorflow, train, predict and server demo.
