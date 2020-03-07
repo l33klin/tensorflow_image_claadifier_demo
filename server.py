@@ -61,5 +61,5 @@ async def foo(request):
 
 
 if __name__ == '__main__':
-    load_model('./model/2')
+    load_model('./model/2')  # load model from path, the path which you save model after train
     app.run(host='0.0.0.0', port=8007)
