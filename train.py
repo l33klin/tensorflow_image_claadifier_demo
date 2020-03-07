@@ -32,7 +32,7 @@ IMG_WIDTH = 150
 #
 # PATH = os.path.join(os.path.dirname(path_to_zip), 'cats_and_dogs_filtered')
 
-PATH = "/Users/{}/Nextcloud/Documents/MineCraft/2020-02-26/dataset".format(getpass.getuser())
+PATH = "/Users/{}/Nextcloud/Documents/MineCraft/2020-02-26/dataset2".format(getpass.getuser())
 
 train_dir = os.path.join(PATH, 'train')
 validation_dir = os.path.join(PATH, 'validation')
@@ -106,6 +106,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 model.summary()
+input("Press enter to train...")
 
 history = model.fit_generator(
     train_data_gen,
@@ -140,7 +141,7 @@ plt.show()
 
 # Save model
 MODEL_DIR = "./model"
-version = 1
+version = 2
 export_path = os.path.join(MODEL_DIR, str(version))
 
 # REF: https://www.tensorflow.org/api_docs/python/tf/keras/models/save_model
