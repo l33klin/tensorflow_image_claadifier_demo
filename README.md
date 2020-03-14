@@ -1,5 +1,5 @@
 # Tensorflow Image Classifier Demo
-A image classifier base on tensorflow: train, predict and serving demo.
+A image classifier base on tensorflow: train, predict and serve demo.
 
 ## Prepare
 
