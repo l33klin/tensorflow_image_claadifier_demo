@@ -7,6 +7,7 @@ Authors:    klin
 Email:      l33klin@foxmail.com
 Date:       2020/2/26
 Ref:        https://www.tensorflow.org/tutorials/images/classification
+            https://www.tensorflow.org/api_docs/python/tf/keras/models/save_model
 """
 from __future__ import absolute_import, division, print_function, unicode_literals
 import tensorflow as tf
@@ -16,7 +17,6 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 import os
 import getpass
-import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -32,7 +32,8 @@ IMG_WIDTH = 150
 #
 # PATH = os.path.join(os.path.dirname(path_to_zip), 'cats_and_dogs_filtered')
 
-PATH = "/Users/{}/Nextcloud/Documents/MineCraft/2020-02-26/dataset2".format(getpass.getuser())
+# PATH = "/Users/{}/Nextcloud/Documents/MineCraft/2020-02-26/dataset2".format(getpass.getuser())
+PATH = "./dataset"
 
 train_dir = os.path.join(PATH, 'train')
 validation_dir = os.path.join(PATH, 'validation')
@@ -141,7 +142,7 @@ plt.show()
 
 # Save model
 MODEL_DIR = "./model"
-version = 2
+version = 2   # version of your model, definition by yourself
 export_path = os.path.join(MODEL_DIR, str(version))
 
 # REF: https://www.tensorflow.org/api_docs/python/tf/keras/models/save_model

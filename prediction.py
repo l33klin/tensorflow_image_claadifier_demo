@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 
 USER = getpass.getuser()
 
-MODEL_PATH = "./model/1"
+MODEL_PATH = "./model/2"  # the path which you save your model after train
 
 BITE_IMG = "bite.jpg"
 NO_BITE_IMG = "no_bite.jpg"
@@ -28,17 +28,17 @@ IMG_HEIGHT = IMG_WIDTH = 150
 
 
 def preprocess_image(image):
-  image = tf.image.decode_jpeg(image, channels=3)
-  image = tf.image.resize(image, [IMG_HEIGHT, IMG_WIDTH])
-  image /= 255.0  # normalize to [0,1] range
-  image = np.expand_dims(image, axis=0)
-
-  return image
+    image = tf.image.decode_jpeg(image, channels=3)
+    image = tf.image.resize(image, [IMG_HEIGHT, IMG_WIDTH])
+    image /= 255.0  # normalize to [0,1] range
+    image = np.expand_dims(image, axis=0)
+    
+    return image
 
 
 def load_and_preprocess_image(path):
-  image = tf.io.read_file(path)
-  return preprocess_image(image)
+    image = tf.io.read_file(path)
+    return preprocess_image(image)
 
 
 # Recreate the exact same model
@@ -47,8 +47,11 @@ new_model = tf.keras.models.load_model(MODEL_PATH)
 # Check that the state is preserved
 # new_predictions = new_model.predict([load_and_preprocess_image(BITE_IMG)])
 
-BITE_DIR = "/Users/{}/Nextcloud/Documents/MineCraft/2020-02-26/dataset/validation/bite".format(USER)
-NO_BITE_DIR = "/Users/{}/Nextcloud/Documents/MineCraft/2020-02-26/dataset/validation/no_bite".format(USER)
+# DATASET_DIR = "/Users/{}/Nextcloud/Documents/MineCraft/2020-02-26/dataset".format(USER)
+DATASET_DIR = "./dataset"
+
+BITE_DIR = os.path.join(DATASET_DIR, "validation/bite")
+NO_BITE_DIR = os.path.join(DATASET_DIR, "validation/no_bite")
 
 BITE_IMG_5 = random.sample(os.listdir(BITE_DIR), 5)
 NO_BITE_IMG_5 = random.sample(os.listdir(NO_BITE_DIR), 5)
@@ -65,7 +68,7 @@ for img in NO_BITE_IMG_5:
     predictions = new_model.predict([load_and_preprocess_image(os.path.join(NO_BITE_DIR, img))])
     print("predictions: {}".format(predictions))
 
-print("Use time: {}".format(time.time() - start))
+print("Cost time: {}".format(time.time() - start))
 
 
 def get_file_name(file_path):
@@ -77,19 +80,6 @@ def get_file_name(file_path):
 
 
 start = time.time()
-# BITE_IMG_ALL = os.listdir(BITE_DIR)
-# xValue = list(range(0, len(BITE_IMG_ALL)))
-# yValue = []
-# for img in BITE_IMG_ALL:
-#     predictions = new_model.predict([load_and_preprocess_image(os.path.join(BITE_DIR, img))])
-#     yValue.append(predictions[0][0])
-#
-# NO_BITE_IMG_ALL = os.listdir(NO_BITE_DIR)
-# no_bite_xValue = list(range(0, len(NO_BITE_IMG_ALL)))
-# no_bite_yValue = []
-# for img in NO_BITE_IMG_ALL:
-#     predictions = new_model.predict([load_and_preprocess_image(os.path.join(NO_BITE_DIR, img))])
-#     no_bite_yValue.append(predictions[0][0])
 
 IMG_ALL = [os.path.join(BITE_DIR, x) for x in os.listdir(BITE_DIR)] \
           + [os.path.join(NO_BITE_DIR, x) for x in os.listdir(NO_BITE_DIR)]
@@ -101,7 +91,7 @@ for img in IMG_ALL:
     predictions = new_model.predict([load_and_preprocess_image(img)])
     yValue.append(predictions[0][0])
 
-print("predict all use time: {}".format(time.time() - start))
+print("predict all cost time: {}".format(time.time() - start))
 
 plt.title('Bite scatter')
 plt.legend()
