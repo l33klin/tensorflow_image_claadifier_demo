@@ -71,7 +71,8 @@ for img in NO_BITE_IMG_5:
 print("Cost time: {}".format(time.time() - start))
 
 
-def get_file_name(file_path):
+def get_file_name(item):
+    file_path = item[0]
     name_suf = os.path.split(file_path)[-1]
     if "." in name_suf:
         return ".".join(name_suf.split('.')[:-1])
@@ -81,20 +82,28 @@ def get_file_name(file_path):
 
 start = time.time()
 
-IMG_ALL = [os.path.join(BITE_DIR, x) for x in os.listdir(BITE_DIR)] \
-          + [os.path.join(NO_BITE_DIR, x) for x in os.listdir(NO_BITE_DIR)]
+IMG_ALL = [(os.path.join(BITE_DIR, x), True) for x in os.listdir(BITE_DIR)] \
+          + [(os.path.join(NO_BITE_DIR, x), False) for x in os.listdir(NO_BITE_DIR)]
 
 IMG_ALL = sorted(IMG_ALL, key=get_file_name)
-xValue = list(range(0, len(IMG_ALL)))
-yValue = []
-for img in IMG_ALL:
-    predictions = new_model.predict([load_and_preprocess_image(img)])
-    yValue.append(predictions[0][0])
+bite_xValue = []
+bite_yValue = []
+no_bite_xValue = []
+no_bite_yValue = []
+
+for index, item in enumerate(IMG_ALL):
+    predictions = new_model.predict([load_and_preprocess_image(item[0])])
+    if item[1]:
+        bite_xValue.append(index)
+        bite_yValue.append(predictions[0][0])
+    else:
+        no_bite_xValue.append(index)
+        no_bite_yValue.append(predictions[0][0])
 
 print("predict all cost time: {}".format(time.time() - start))
 
 plt.title('Bite scatter')
 plt.legend()
-plt.scatter(xValue, yValue, s=20, c="#ff1212", marker='o')
-# plt.scatter(no_bite_xValue, no_bite_yValue, s=20, c="b", marker='o')
+plt.scatter(bite_xValue, bite_yValue, s=20, c="r", marker='o')
+plt.scatter(no_bite_xValue, no_bite_yValue, s=20, c="b", marker='o')
 plt.show()
